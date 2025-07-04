@@ -4,13 +4,48 @@
   ...
 }: {
   vim = {
-    globals = {
-      leader = ",";
+    globals.mapleader = ",";
+
+    options = {
+      number = true;
+      relativenumber = false;
+      cursorline = true;
+      showmatch = true;
+      ignorecase = true;
+      smartcase = true;
+      title = true;
+      visualbell = true;
+      splitright = true;
+      splitbelow = true;
+      linebreak = true;
+
+      # Tabs and indentation
+      tabstop = 4;
+      softtabstop = 4;
+      shiftwidth = 4;
+      expandtab = true;
+
+      # List characters
+      list = false;
+      listchars = "eol:↲,tab:▸ ,trail:·";
+
+      # Wild menu
+      wildmode = "list:longest,list:full";
+      wildignore = "*.swp,*.bak,*.pyc,*.class,.svn,.git";
+
+      # Completion
+      complete = ".,w,t";
+
+      # Display
+      # background = "dark";
+      termguicolors = true;
+      ttyfast = true;
+      laststatus = 1;
+      fillchars = "vert:│,stl: ,stlnc:-";
     };
 
     # Key mappings
     maps = {
-      # Insert mode mappings
       insert = {
         "jj" = {
           action = "<Esc>";
@@ -18,7 +53,6 @@
         };
       };
 
-      # Normal mode mappings
       normal = {
         # Window navigation
         "<C-j>" = {
@@ -89,8 +123,10 @@
 
     languages = {
       enableTreesitter = true;
-
+      lua.enable = true;
+      markdown.enable = true;
       nix.enable = true;
+      sql.enable = true;
       ts.enable = true;
       python.enable = true;
       rust.enable = true;
