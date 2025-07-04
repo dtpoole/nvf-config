@@ -99,14 +99,19 @@
           action = ":set number!<CR>";
           silent = true;
         };
-        "<leader>v" = {
-          action = ":vsplit $MYVIMRC<CR>";
-          silent = true;
-        };
+        # "<leader>v" = {
+        #   action = ":vsplit $MYVIMRC<CR>";
+        #   silent = true;
+        # };
 
         # Buffer navigation
         "<C-g>" = {
           action = ":bn<CR>";
+          silent = true;
+        };
+
+        "<C-d>" = {
+          action = ":NvimTreeToggle<CR>";
           silent = true;
         };
       };
@@ -134,6 +139,34 @@
         gitStatus = "<leader>gs";
       };
     };
+
+    filetree = {
+      nvimTree = {
+        enable = true;
+        openOnSetup = false;
+        setupOpts = {
+          view = {
+            width = 35;
+            side = "left";
+          };
+          renderer = {
+            icons = {
+              show = {
+                git = true;
+                folder = true;
+                file = true;
+              };
+            };
+          };
+          filters = {
+            dotfiles = true;
+            exclude = ["node_modules"];
+          };
+        };
+      };
+    };
+
+
 
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
