@@ -116,8 +116,25 @@
       name = "nord";
       style = "dark";
     };
-    statusline.lualine.enable = true;
-    telescope.enable = true;
+    statusline = {
+      lualine = {
+        enable = true;
+        theme = "nord";
+      };
+    };
+
+    telescope = {
+      enable = true;
+      mappings = {
+        buffers = "<leader>b";
+        findFiles = "<leader>f";
+
+        gitBranches = "<leader>gb";
+        gitCommits = "<leader>gc";
+        gitStatus = "<leader>gs";
+      };
+    };
+
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
 
