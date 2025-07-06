@@ -6,6 +6,9 @@
   vim = {
     globals.mapleader = ",";
 
+    viAlias = true;
+    vimAlias = true;
+
     options = {
       number = true;
       relativenumber = false;
@@ -37,7 +40,6 @@
       complete = ".,w,t";
 
       # Display
-      # background = "dark";
       termguicolors = true;
       ttyfast = true;
       laststatus = 1;
@@ -99,10 +101,6 @@
           action = ":set number!<CR>";
           silent = true;
         };
-        # "<leader>v" = {
-        #   action = ":vsplit $MYVIMRC<CR>";
-        #   silent = true;
-        # };
 
         # Buffer navigation
         "<C-g>" = {
@@ -114,13 +112,25 @@
           action = ":NvimTreeToggle<CR>";
           silent = true;
         };
+
+        "_$" = {
+          action = ":%s/\\s\\+$//e<CR>";
+          silent = true;
+        };
+
+        "_=" = {
+          action = ":lua if next(vim.lsp.get_clients()) then vim.lsp.buf.format({ async = false }) else vim.cmd('normal! gg=G``') end<CR>";
+          silent = true;
+        };
       };
     };
+
     theme = {
       enable = true;
       name = "nord";
       style = "dark";
     };
+
     statusline = {
       lualine = {
         enable = true;
@@ -145,6 +155,7 @@
         enable = true;
         openOnSetup = false;
         setupOpts = {
+          git.enable = true;
           view = {
             width = 35;
             side = "left";
@@ -159,27 +170,26 @@
             };
           };
           filters = {
-            dotfiles = true;
             exclude = ["node_modules"];
           };
         };
       };
     };
 
-
-
     autocomplete.nvim-cmp.enable = true;
     lsp.enable = true;
 
     languages = {
       enableTreesitter = true;
+
       lua.enable = true;
       markdown.enable = true;
       nix.enable = true;
-      sql.enable = true;
-      ts.enable = true;
       python.enable = true;
       rust.enable = true;
+      sql.enable = true;
+      ts.enable = true;
+      yaml.enable = true;
     };
   };
 }
