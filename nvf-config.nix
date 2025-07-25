@@ -181,10 +181,13 @@
 
     languages = {
       enableTreesitter = true;
-
+      bash.enable = true;
       lua.enable = true;
       markdown.enable = true;
-      nix.enable = true;
+      nix = {
+        enable = true;
+        format.enable = true;
+      };
       python.enable = true;
       rust.enable = true;
       sql.enable = true;
