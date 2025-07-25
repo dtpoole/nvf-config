@@ -22,6 +22,7 @@
         }
     );
   in {
+    devShells = forEachSystem (system: import ./shell.nix {pkgs = pkgsFor.${system};});
     formatter = forEachSystem (system: pkgsFor.${system}.alejandra);
     packages = forEachSystem (system: {
       default =
