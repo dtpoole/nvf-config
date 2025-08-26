@@ -1,26 +1,24 @@
-# Alternative approach using osConfig for better detection
 {
   config,
   lib,
   pkgs,
-  osConfig ? null,  # This is passed by Home Manager when used with NixOS
+  osConfig ? null,
+  inputs,
   ...
 }: let
   cfg = config.programs.nvf-config;
 
-  # Get nvf from the flake inputs
-  nvf = (builtins.getFlake (toString ./.)).inputs.nvf;
+  inherit (inputs) nvf;
 
   # Create the neovim package
-  neovimPackage = (nvf.lib.neovimConfiguration {
-    inherit pkgs;
-    modules = [./nvf-config.nix];
-  }).neovim;
+  neovimPackage =
+    (nvf.lib.neovimConfiguration {
+      inherit pkgs;
+      modules = [./nvf-config.nix];
+    }).neovim;
 
-  # Better detection of context
   isNixOS = config ? environment || osConfig != null;
   isHomeManager = config ? home;
-
 in {
   options.programs.nvf-config = {
     enable = lib.mkEnableOption "nvf-config neovim configuration";
@@ -75,8 +73,7 @@ in {
 
       programs.neovim = {
         enable = true;
-        package = cfg.package;
-        defaultEditor = cfg.defaultEditor;
+        inherit (cfg) package defaultEditor;
         viAlias = cfg.withAliases;
         vimAlias = cfg.withAliases;
       };

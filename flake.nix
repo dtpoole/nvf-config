@@ -31,5 +31,15 @@
           modules = [./nvf-config.nix];
         }).neovim;
     });
+
+    nixosModules = {
+      default = import ./module.nix;
+      nvf-config = import ./module.nix;
+    };
+
+    homeManagerModules = {
+      default = import ./module.nix;
+      nvf-config = import ./module.nix;
+    };
   };
 }
