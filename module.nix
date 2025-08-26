@@ -18,7 +18,7 @@
     }).neovim;
 
   isNixOS = config ? environment || osConfig != null;
-  isHomeManager = config ? home;
+  isHomeManager = !isNixOS;
 in {
   options.programs.nvf-config = {
     enable = lib.mkEnableOption "nvf-config neovim configuration";
