@@ -8,7 +8,7 @@
 }: let
   cfg = config.programs.nvf-config;
 
-  inherit (inputs) nvf;
+  nvf = inputs.nvf-config.inputs.nvf or inputs.nvf;
 
   # Create the neovim package
   neovimPackage =
