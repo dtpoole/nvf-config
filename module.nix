@@ -96,13 +96,6 @@ in {
         };
       };
 
-      # XDG configuration for additional config (if needed)
-      xdg.configFile."nvim/init-extra.lua" = lib.mkIf (cfg.extraConfig != "") {
-        text = ''
-          -- Additional configuration from home-manager
-          ${cfg.extraConfig}
-        '';
-      };
     })
   ]);
 }
