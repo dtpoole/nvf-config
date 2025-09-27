@@ -95,7 +95,6 @@ in {
           vimdiff = "nvim -d";
         };
       };
-
     })
   ]);
 }
