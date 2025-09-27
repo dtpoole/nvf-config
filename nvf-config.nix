@@ -131,6 +131,25 @@
       lualine = {
         enable = true;
         theme = "nord";
+        activeSection.a = [
+          ''
+            {
+              "mode",
+              icons_enabled = true,
+              separator = {
+                left = '▉',
+                right = ''
+              },
+            }
+          ''
+          ''
+            {
+              "",
+              draw_empty = true,
+              separator = { left = '', right = '' }
+            }
+          ''
+        ];
       };
     };
 
@@ -153,7 +172,7 @@
         setupOpts = {
           git.enable = true;
           view = {
-            width = 35;
+            width = 40;
             side = "left";
           };
           renderer = {
