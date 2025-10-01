@@ -3,7 +3,19 @@ profile: {lib, ...}: let
   isFull = profile == "full";
 in {
   vim = {
-    globals.mapleader = ",";
+    globals = lib.mkMerge [
+      {
+        mapleader = ",";
+      }
+      # Netrw settings for base profile
+      (lib.mkIf (!isFull) {
+        netrw_banner = 0;
+        netrw_liststyle = 3;
+        netrw_winsize = 35;
+        netrw_browse_split = 4;
+        netrw_altv = 1;
+      })
+    ];
 
     viAlias = true;
     vimAlias = true;
@@ -111,7 +123,10 @@ in {
         };
 
         "<C-d>" = {
-          action = ":NvimTreeToggle<CR>";
+          action =
+            if isFull
+            then ":NvimTreeToggle<CR>"
+            else ":Lexplore<CR>";
           silent = true;
         };
 
@@ -173,8 +188,8 @@ in {
     };
 
     telescope = {
-      enable = true;
-      mappings = {
+      enable = isFull;
+      mappings = lib.mkIf isFull {
         buffers = "<leader>b";
         findFiles = "<leader>f";
         gitBranches = "<leader>gb";
@@ -185,7 +200,7 @@ in {
 
     filetree = {
       nvimTree = {
-        enable = true;
+        enable = isFull;
         openOnSetup = false;
         setupOpts = {
           git.enable = true;
@@ -215,21 +230,21 @@ in {
     languages = {
       enableTreesitter = true;
       bash.enable = true;
-      lua.enable = true;
+      lua.enable = isFull;
       markdown.enable = true;
       nix = {
         enable = true;
         format.enable = isFull;
       };
-      python.enable = true;
+      python.enable = isFull;
       rust.enable = isFull;
-      sql.enable = true;
+      sql.enable = isFull;
       ts.enable = isFull;
       yaml.enable = true;
     };
 
     visuals = {
-      nvim-web-devicons.enable = true;
+      nvim-web-devicons.enable = isFull;
     };
   };
 }
