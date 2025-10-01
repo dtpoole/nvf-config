@@ -24,12 +24,17 @@
   in {
     devShells = forEachSystem (system: import ./shell.nix {pkgs = pkgsFor.${system};});
     formatter = forEachSystem (system: pkgsFor.${system}.alejandra);
-    packages = forEachSystem (system: {
-      default =
+    packages = forEachSystem (system: let
+      mkNeovim = profile:
         (nvf.lib.neovimConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
-          modules = [./nvf-config.nix];
+          modules = [(import ./nvf-config.nix profile)];
         }).neovim;
+      base = mkNeovim "base";
+    in {
+      inherit base;
+      full = mkNeovim "full";
+      default = base;
     });
 
     nixosModules = {

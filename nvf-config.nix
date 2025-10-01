@@ -1,4 +1,7 @@
-{lib, ...}: {
+profile: {lib, ...}: let
+  # Full profile includes LSP, completion, etc
+  isFull = profile == "full";
+in {
   vim = {
     globals.mapleader = ",";
 
@@ -144,21 +147,24 @@
             lualine_a = ["mode"];
             lualine_b = ["branch" "diff"];
             lualine_c = ["filename" "diagnostics"];
-            lualine_x = [
-              (lib.generators.mkLuaInline ''
-                function()
-                  local clients = vim.lsp.get_active_clients({ bufnr = 0 })
-                  if #clients == 0 then return "" end
-                  local names = {}
-                  for _, client in ipairs(clients) do
-                    table.insert(names, client.name)
+            lualine_x =
+              [
+                "encoding"
+                "filetype"
+              ]
+              ++ lib.optionals isFull [
+                (lib.generators.mkLuaInline ''
+                  function()
+                    local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+                    if #clients == 0 then return "" end
+                    local names = {}
+                    for _, client in ipairs(clients) do
+                      table.insert(names, client.name)
+                    end
+                    return "󰒋 " .. table.concat(names, " ")
                   end
-                  return "󰒋 " .. table.concat(names, " ")
-                end
-              '')
-              "encoding"
-              "filetype"
-            ];
+                '')
+              ];
             lualine_y = ["progress"];
             lualine_z = ["location"];
           };
@@ -203,8 +209,8 @@
       };
     };
 
-    autocomplete.nvim-cmp.enable = true;
-    lsp.enable = true;
+    autocomplete.nvim-cmp.enable = isFull;
+    lsp.enable = isFull;
 
     languages = {
       enableTreesitter = true;
@@ -213,12 +219,12 @@
       markdown.enable = true;
       nix = {
         enable = true;
-        format.enable = true;
+        format.enable = isFull;
       };
       python.enable = true;
-      rust.enable = true;
+      rust.enable = isFull;
       sql.enable = true;
-      ts.enable = true;
+      ts.enable = isFull;
       yaml.enable = true;
     };
 

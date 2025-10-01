@@ -10,11 +10,11 @@
 
   nvf = inputs.nvf-config.inputs.nvf or inputs.nvf;
 
-  # Create the neovim package
+  # Create the neovim package with the selected profile
   neovimPackage =
     (nvf.lib.neovimConfiguration {
       inherit pkgs;
-      modules = [./nvf-config.nix];
+      modules = [(import ./nvf-config.nix {inherit (cfg) profile;})];
     }).neovim;
 
   isNixOS = config ? environment || osConfig != null;
@@ -22,6 +22,16 @@
 in {
   options.programs.nvf-config = {
     enable = lib.mkEnableOption "nvf-config neovim configuration";
+
+    profile = lib.mkOption {
+      type = lib.types.enum ["base" "full"];
+      default = "full";
+      description = ''
+        Which profile to use:
+        - base: Basic editing without LSP
+        - full: Complete setup with LSP and completion
+      '';
+    };
 
     package = lib.mkOption {
       type = lib.types.package;
