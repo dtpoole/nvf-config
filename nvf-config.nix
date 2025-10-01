@@ -1,4 +1,8 @@
-profile: {lib, ...}: let
+profile: {
+  lib,
+  pkgs,
+  ...
+}: let
   # Full profile includes LSP, completion, etc
   isFull = profile == "full";
 in {
@@ -6,6 +10,12 @@ in {
     globals = lib.mkMerge [
       {
         mapleader = ",";
+        nord_contrast = false;
+        nord_borders = true;
+        nord_disable_background = false;
+        nord_italic = true;
+        nord_italic_comments = false;
+        nord_bold = false;
       }
       # Netrw settings for base profile
       (lib.mkIf (!isFull) {
@@ -16,6 +26,23 @@ in {
         netrw_altv = 1;
       })
     ];
+
+    # Load nord theme manually so we can set options
+    theme.enable = false;
+    startPlugins = [pkgs.vimPlugins.nord-nvim];
+
+    luaConfigRC = {
+      nord-config = ''
+        vim.g.nord_contrast = false
+        vim.g.nord_borders = true
+        vim.g.nord_disable_background = false
+        vim.g.nord_italic = true
+        vim.g.nord_italic_comments = true
+        vim.g.nord_bold = false
+
+        require('nord').set()
+      '';
+    };
 
     viAlias = true;
     vimAlias = true;
@@ -140,12 +167,6 @@ in {
           silent = true;
         };
       };
-    };
-
-    theme = {
-      enable = true;
-      name = "nord";
-      style = "dark";
     };
 
     statusline = {
