@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   vim = {
     globals.mapleader = ",";
 
@@ -6,7 +6,7 @@
     vimAlias = true;
 
     options = {
-      number = true;
+      number = false;
       relativenumber = false;
       cursorline = true;
       showmatch = true;
@@ -31,6 +31,9 @@
       # Wild menu
       wildmode = "list:longest,list:full";
       wildignore = "*.swp,*.bak,*.pyc,*.class,.svn,.git";
+
+      signcolumn = "auto";
+      showmode = false;
 
       # Completion
       complete = ".,w,t";
@@ -130,26 +133,36 @@
     statusline = {
       lualine = {
         enable = true;
-        theme = "nord";
-        activeSection.a = [
-          ''
-            {
-              "mode",
-              icons_enabled = true,
-              separator = {
-                left = '▉',
-                right = ''
-              },
-            }
-          ''
-          ''
-            {
-              "",
-              draw_empty = true,
-              separator = { left = '', right = '' }
-            }
-          ''
-        ];
+
+        sectionSeparator = {
+          left = "";
+          right = "";
+        };
+
+        setupOpts = {
+          sections = {
+            lualine_a = ["mode"];
+            lualine_b = ["branch" "diff"];
+            lualine_c = ["filename" "diagnostics"];
+            lualine_x = [
+              (lib.generators.mkLuaInline ''
+                function()
+                  local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+                  if #clients == 0 then return "" end
+                  local names = {}
+                  for _, client in ipairs(clients) do
+                    table.insert(names, client.name)
+                  end
+                  return "󰒋 " .. table.concat(names, " ")
+                end
+              '')
+              "encoding"
+              "filetype"
+            ];
+            lualine_y = ["progress"];
+            lualine_z = ["location"];
+          };
+        };
       };
     };
 
@@ -158,7 +171,6 @@
       mappings = {
         buffers = "<leader>b";
         findFiles = "<leader>f";
-
         gitBranches = "<leader>gb";
         gitCommits = "<leader>gc";
         gitStatus = "<leader>gs";
@@ -208,6 +220,10 @@
       sql.enable = true;
       ts.enable = true;
       yaml.enable = true;
+    };
+
+    visuals = {
+      nvim-web-devicons.enable = true;
     };
   };
 }
