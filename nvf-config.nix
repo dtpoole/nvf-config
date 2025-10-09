@@ -46,17 +46,32 @@ in {
     vimAlias = true;
 
     options = {
+      # Display
       number = false;
       relativenumber = false;
       cursorline = true;
       showmatch = true;
+      signcolumn = "auto";
+      showmode = false;
+      termguicolors = true;
+      ttyfast = true;
+      laststatus = 1;
+      fillchars = "vert:│,stl: ,stlnc:-";
+
+      # Search
       ignorecase = true;
       smartcase = true;
-      title = true;
-      visualbell = true;
+
+      # Window splits
       splitright = true;
       splitbelow = true;
+
+      # Text display
+      title = true;
+      visualbell = true;
       linebreak = true;
+      list = false;
+      listchars = "eol:↲,tab:▸ ,trail:·";
 
       # Tabs and indentation
       tabstop = 4;
@@ -64,25 +79,10 @@ in {
       shiftwidth = 4;
       expandtab = true;
 
-      # List characters
-      list = false;
-      listchars = "eol:↲,tab:▸ ,trail:·";
-
-      # Wild menu
-      wildmode = "list:longest,list:full";
-      wildignore = "*.swp,*.bak,*.pyc,*.class,.svn,.git";
-
-      signcolumn = "auto";
-      showmode = false;
-
       # Completion
       complete = ".,w,t";
-
-      # Display
-      termguicolors = true;
-      ttyfast = true;
-      laststatus = 1;
-      fillchars = "vert:│,stl: ,stlnc:-";
+      wildmode = "list:longest,list:full";
+      wildignore = "*.swp,*.bak,*.pyc,*.class,.svn,.git";
     };
 
     # Key mappings
@@ -204,18 +204,20 @@ in {
 
     languages = {
       enableTreesitter = true;
+
       bash.enable = true;
-      lua.enable = isFull;
       markdown.enable = true;
+      yaml.enable = true;
       nix = {
         enable = true;
         format.enable = isFull;
       };
+
+      lua.enable = isFull;
       python.enable = isFull;
       rust.enable = isFull;
       sql.enable = isFull;
       ts.enable = isFull;
-      yaml.enable = true;
     };
 
     visuals = {
