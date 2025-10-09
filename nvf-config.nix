@@ -5,6 +5,11 @@ profile: {
 }: let
   # Full profile includes LSP, completion, etc
   isFull = profile == "full";
+
+  mkMap = action: {
+    inherit action;
+    silent = true;
+  };
 in {
   vim = {
     globals = lib.mkMerge [
@@ -83,82 +88,38 @@ in {
     # Key mappings
     maps = {
       insert = {
-        "jj" = {
-          action = "<Esc>";
-          silent = true;
-        };
+        "jj" = mkMap "<Esc>";
       };
 
       normal = {
         # Window navigation
-        "<C-j>" = {
-          action = "<C-w><C-j>";
-          silent = true;
-        };
-        "<C-k>" = {
-          action = "<C-w><C-k>";
-          silent = true;
-        };
-        "<C-l>" = {
-          action = "<C-w><C-l>";
-          silent = true;
-        };
-        "<C-h>" = {
-          action = "<C-w><C-h>";
-          silent = true;
-        };
+        "<C-j>" = mkMap "<C-w><C-j>";
+        "<C-k>" = mkMap "<C-w><C-k>";
+        "<C-l>" = mkMap "<C-w><C-l>";
+        "<C-h>" = mkMap "<C-w><C-h>";
 
         # Movement improvements
-        "j" = {
-          action = "gj";
-          silent = true;
-        };
-        "k" = {
-          action = "gk";
-          silent = true;
-        };
+        "j" = mkMap "gj";
+        "k" = mkMap "gk";
 
         # Leader mappings
-        "<leader>/" = {
-          action = ":nohlsearch<CR>";
-          silent = true;
-        };
-        "<leader><leader>" = {
-          action = "<C-^>";
-          silent = true;
-        };
-        "<leader>l" = {
-          action = ":set list!<CR>";
-          silent = true;
-        };
-        "<leader>n" = {
-          action = ":set number!<CR>";
-          silent = true;
-        };
+        "<leader>/" = mkMap ":nohlsearch<CR>";
+        "<leader><leader>" = mkMap "<C-^>";
+        "<leader>l" = mkMap ":set list!<CR>";
+        "<leader>n" = mkMap ":set number!<CR>";
 
         # Buffer navigation
-        "<C-g>" = {
-          action = ":bn<CR>";
-          silent = true;
-        };
+        "<C-g>" = mkMap ":bn<CR>";
 
-        "<C-d>" = {
-          action =
-            if isFull
-            then ":NvimTreeToggle<CR>"
-            else ":Lexplore<CR>";
-          silent = true;
-        };
+        "<C-d>" = mkMap (
+          if isFull
+          then ":NvimTreeToggle<CR>"
+          else ":Lexplore<CR>"
+        );
 
-        "_$" = {
-          action = ":%s/\\s\\+$//e<CR>";
-          silent = true;
-        };
+        "_$" = mkMap ":%s/\\s\\+$//e<CR>";
 
-        "_=" = {
-          action = ":lua if next(vim.lsp.get_clients()) then vim.lsp.buf.format({ async = false }) else vim.cmd('normal! gg=G``') end<CR>";
-          silent = true;
-        };
+        "_=" = mkMap ":lua if next(vim.lsp.get_clients()) then vim.lsp.buf.format({ async = false }) else vim.cmd('normal! gg=G``') end<CR>";
       };
     };
 
