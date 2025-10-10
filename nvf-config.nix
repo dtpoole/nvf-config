@@ -20,7 +20,7 @@ in {
       (lib.mkIf (!isFull) {
         netrw_banner = 0;
         netrw_liststyle = 3;
-        netrw_winsize = 35;
+        netrw_winsize = 20;
         netrw_browse_split = 4;
         netrw_altv = 1;
       })
